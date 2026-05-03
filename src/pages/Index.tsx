@@ -29,6 +29,7 @@ import { Link } from "react-router-dom";
 import MatrixRain from "@/components/MatrixRain";
 import FeatureCard from "@/components/FeatureCard";
 import TerminalWindow from "@/components/TerminalWindow";
+import { useReveal } from "@/hooks/useReveal";
 import heroBg from "@/assets/hero-cyberpunk.jpg";
 
 // ============= CONFIGURAÇÕES (edite aqui) =============
