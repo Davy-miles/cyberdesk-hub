@@ -1,1 +1,9 @@
 project_id = "rvtzpaxtnhxzbglfyeyj"
+
+# Edge functions públicas — não exigem JWT do Supabase, pois o
+# Discord chama o callback diretamente sem login do nosso backend.
+[functions.discord-auth-start]
+verify_jwt = false
+
+[functions.discord-callback]
+verify_jwt = false

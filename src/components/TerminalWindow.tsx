@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 
 // Linhas que serão exibidas como se fossem digitadas
 const lines = [
-  { prompt: "$", text: "ssh dev@cyberdesk.io", color: "text-accent" },
+  { prompt: "$", text: "ssh dev@cyberworld.io", color: "text-accent" },
   { prompt: ">", text: "Conectando ao servidor seguro...", color: "text-muted-foreground" },
   { prompt: ">", text: "Autenticação concluída ✓", color: "text-primary" },
   { prompt: "$", text: "join --community --role=dev", color: "text-accent" },
@@ -40,7 +40,7 @@ const TerminalWindow = () => {
         <div className="w-3 h-3 rounded-full bg-secondary" />
         <div className="w-3 h-3 rounded-full bg-primary" />
         <span className="ml-2 text-xs text-muted-foreground font-mono">
-          cyberdesk@terminal ~ /home/dev
+          cyberworld@terminal ~ /home/dev
         </span>
       </div>
 
