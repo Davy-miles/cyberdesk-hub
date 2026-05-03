@@ -61,7 +61,7 @@ const App = () => (
     <TooltipProvider delayDuration={200}>
       <Toaster />
       <Sonner />
-      <BrowserRouter>
+      <BrowserRouter basename="/cyberdesk-hub">
         <Suspense fallback={<RouteFallback />}>
           <Routes>
             <Route path="/" element={<Index />} />
