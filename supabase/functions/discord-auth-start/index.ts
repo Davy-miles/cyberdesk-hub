@@ -33,8 +33,10 @@ Deno.serve((req) => {
 
     // O frontend manda a URL atual para sabermos para onde voltar depois
     const url = new URL(req.url);
-    const returnTo = url.searchParams.get("return_to") ?? "/verify/success";
-
+  const rawReturnTo = url.searchParams.get("return_to") ?? "/verify/success";
+  const returnTo = rawReturnTo.startsWith("/") && !rawReturnTo.startsWith("//")
+    ? rawReturnTo
+    : "/verify/success";
     // A URL de callback DEVE bater exatamente com a configurada no Discord
     const redirectUri = `${url.origin}/functions/v1/discord-callback`;
 

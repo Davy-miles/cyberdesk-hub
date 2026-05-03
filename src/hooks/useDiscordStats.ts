@@ -67,6 +67,8 @@ export const useDiscordStats = (): DiscordStatsState => {
         }
 
         const inviteData = (await inviteRes.json()) as DiscordInviteResponse;
+        if (ac.signal.aborted) return;
+
         const guildId = inviteData.guild?.id ?? GUILD_ID;
         const guildName = inviteData.guild?.name ?? FALLBACK_GUILD_NAME;
         const guildIconUrl = toGuildIconUrl(guildId, inviteData.guild?.icon ?? null);
@@ -77,12 +79,14 @@ export const useDiscordStats = (): DiscordStatsState => {
             signal: ac.signal,
           });
 
+          if (ac.signal.aborted) return;
           if (widgetRes.ok) {
             const widgetData = (await widgetRes.json()) as DiscordWidgetResponse;
             channelCount = widgetData.channels?.length ?? null;
           }
         }
 
+        if (ac.signal.aborted) return;
         setState({
           loading: false,
           error: null,

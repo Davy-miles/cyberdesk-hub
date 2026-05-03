@@ -48,7 +48,7 @@ const TerminalWindow = () => {
   }, []);
 
   return (
-    <div className="rounded-lg overflow-hidden border border-primary/30 shadow-neon bg-card/80 backdrop-blur-sm">
+    <div className="rounded-lg overflow-hidden border border-primary/30 shadow-neon bg-card/80 backdrop-blur-sm animate-terminal-entrance">
       <div className="flex items-center gap-2 px-4 py-3 bg-muted/50 border-b border-border">
         <div className="w-3 h-3 rounded-full bg-destructive" />
         <div className="w-3 h-3 rounded-full bg-secondary" />

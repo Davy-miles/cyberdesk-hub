@@ -13,7 +13,7 @@ import { useEffect } from "react";
 import { Home, Terminal } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-const NotFound = () => {
+const NotFoundPage = () => {
   const location = useLocation();
 
   useEffect(() => {
@@ -66,4 +66,4 @@ const NotFound = () => {
   );
 };
 
-export default NotFound;
+export default NotFoundPage;

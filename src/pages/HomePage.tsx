@@ -1,6 +1,6 @@
 /**
  * ============================================================================
- * PÁGINA INICIAL (home) — src/pages/Index.tsx
+ * PÁGINA INICIAL (home) — src/pages/HomePage.tsx
  * ============================================================================
  * É a landing: menu fixo, hero, números, cards de features, CTA, rodapé.
  *
@@ -55,9 +55,10 @@ import {
   Radio,
 } from "lucide-react";
 import { Link } from "react-router-dom";
-import MatrixRain from "@/components/MatrixRain";
+import MatrixRain from "@/components/MatrixRainBackground";
 import FeatureCard from "@/components/FeatureCard";
-import TerminalWindow from "@/components/TerminalWindow";
+import TerminalWindow from "@/components/TerminalPreview";
+import BackgroundAudio from "@/components/BackgroundAudio";
 import { useReveal } from "@/hooks/useReveal";
 import { useDiscordStats } from "@/hooks/useDiscordStats";
 import heroBg from "@/assets/hero-cyberpunk.jpg";
@@ -70,8 +71,9 @@ const SERVER_NAME = "CYBER WORLD";
 /**
  * Arquivo na pasta public/ — ícone do menu, rodapé e favicon (via index.html).
  * Exemplos: "/logo.svg"  |  "/logo.png"  |  "/minha-marca.webp"
+ * Para usar a logo do servidor (Cyber world.jpeg), use: "/server-logo.jpg"
  */
-const LOGO_SRC = "/logo.svg";
+const LOGO_SRC = "/server-logo.jpg";
 
 /**
  * Cards da seção “features”.
@@ -89,7 +91,7 @@ const features = [
   { icon: MessageSquare, title: "Eventos & Lives", description: "Workshops, hackathons, code battles e palestras com profissionais." },
 ];
 
-const Index = () => {
+const HomePage = () => {
   // Animações ao rolar a página — cada bloco tem seu próprio “sensor” de visibilidade
   const heroReveal = useReveal<HTMLDivElement>();
   const statsReveal = useReveal<HTMLDivElement>();
@@ -132,6 +134,11 @@ const Index = () => {
   return (
     <div className="relative min-h-screen overflow-x-hidden">
       <MatrixRain />
+      <BackgroundAudio 
+        src="/audio/cyberpunk-bg.mp3" 
+        volume={0.15} 
+        autoPlay={true}
+      />
 
       {/* Barra superior fixa: logo + links âncora + botão */}
       <header className="fixed top-0 left-0 right-0 z-50 backdrop-blur-md bg-background/70 border-b border-border">
@@ -429,4 +436,4 @@ const Index = () => {
   );
 };
 
-export default Index;
+export default HomePage;

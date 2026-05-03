@@ -14,9 +14,9 @@
 import { useSearchParams, Link } from "react-router-dom";
 import { CheckCircle2, MessageSquare, Home } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import MatrixRain from "@/components/MatrixRain";
+import MatrixRain from "@/components/MatrixRainBackground";
 
-const VerifySuccess = () => {
+const VerifySuccessPage = () => {
   const [params] = useSearchParams();
   const username = params.get("u") ?? "hacker";
 
@@ -79,4 +79,4 @@ const VerifySuccess = () => {
   );
 };
 
-export default VerifySuccess;
+export default VerifySuccessPage;

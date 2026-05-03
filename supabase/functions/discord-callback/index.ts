@@ -24,7 +24,10 @@ Deno.serve(async (req) => {
   // O Discord chama esta URL com ?code=XXX&state=YYY
   const reqUrl = new URL(req.url);
   const code = reqUrl.searchParams.get("code");
-  const state = reqUrl.searchParams.get("state") ?? "/verify/success";
+  const rawState = reqUrl.searchParams.get("state") ?? "/verify/success";
+  const state = rawState.startsWith("/") && !rawState.startsWith("//")
+    ? rawState
+    : "/verify/success";
 
   // Origem do site (pegamos do header "referer" se existir, senão fallback)
   // Como a função roda em supabase.co, precisamos saber a URL real do site.

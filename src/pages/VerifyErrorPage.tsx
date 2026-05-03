@@ -13,7 +13,7 @@
 import { useSearchParams, Link } from "react-router-dom";
 import { AlertTriangle, RotateCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import MatrixRain from "@/components/MatrixRain";
+import MatrixRain from "@/components/MatrixRainBackground";
 
 /** Mapa código (backend) → mensagem humana. Estenda se criar novos erros. */
 const REASONS: Record<string, string> = {
@@ -24,7 +24,7 @@ const REASONS: Record<string, string> = {
   server_error: "Erro interno no servidor. Tente novamente mais tarde.",
 };
 
-const VerifyError = () => {
+const VerifyErrorPage = () => {
   const [params] = useSearchParams();
   const reason = params.get("reason") ?? "server_error";
   const status = params.get("status");
@@ -73,4 +73,4 @@ const VerifyError = () => {
   );
 };
 
-export default VerifyError;
+export default VerifyErrorPage;

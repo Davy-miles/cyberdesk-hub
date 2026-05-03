@@ -28,14 +28,14 @@ import {
   Loader2,
 } from "lucide-react";
 import { Link } from "react-router-dom";
-import MatrixRain from "@/components/MatrixRain";
+import MatrixRain from "@/components/MatrixRainBackground";
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL as string | undefined;
 const FUNCTIONS_URL = supabaseUrl
   ? `${supabaseUrl.replace(/\/$/, "")}/functions/v1`
   : "";
 
-const Verify = () => {
+const VerifyPage = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -50,14 +50,26 @@ const Verify = () => {
     setLoading(true);
     setError(null);
     try {
-      const returnTo = "/verify/success";
+      const baseUrl = new URL(import.meta.env.BASE_URL ?? "/", window.location.origin);
+      const returnTo = new URL("verify/success", baseUrl).href;
       const res = await fetch(
         `${FUNCTIONS_URL}/discord-auth-start?return_to=${encodeURIComponent(returnTo)}`
       );
       if (!res.ok) throw new Error("Falha ao iniciar autenticação");
       const data = (await res.json()) as { url?: string };
       if (!data.url) throw new Error("Resposta inválida do servidor");
-      window.location.href = data.url;
+
+      const redirectUrl = new URL(data.url);
+      const host = redirectUrl.hostname.toLowerCase();
+      const isDiscordHost =
+        host === "discord.com" || host.endsWith(".discord.com") ||
+        host === "discordapp.com" || host.endsWith(".discordapp.com");
+
+      if (redirectUrl.protocol !== "https:" || !isDiscordHost) {
+        throw new Error("Resposta de autenticação inválida");
+      }
+
+      window.location.href = redirectUrl.toString();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Erro inesperado");
       setLoading(false);
@@ -146,4 +158,4 @@ const Verify = () => {
   );
 };
 
-export default Verify;
+export default VerifyPage;

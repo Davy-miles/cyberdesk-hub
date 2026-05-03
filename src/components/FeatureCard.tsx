@@ -3,7 +3,7 @@
  * FeatureCard — um card da grade “features” da home
  * ============================================================================
  * Quem manda no CONTEÚDO (título, texto, ícone) é o array `features` em
- * Index.tsx. Este arquivo só define o VISUAL (borda, hover, animação).
+ * HomePage.tsx. Este arquivo só define o VISUAL (borda, hover, animação).
  *
  * Props (vindas do map em Index):
  *   icon        → componente Lucide (ex: Shield, Code2)
@@ -11,7 +11,7 @@
  *   description → parágrafo menor
  *   delay       → atraso da animação em ms (efeito cascata)
  *
- * Para mudar textos: edite Index.tsx, não este arquivo.
+ * Para mudar textos: edite HomePage.tsx, não este arquivo.
  * ============================================================================
  */
 import { LucideIcon } from "lucide-react";
