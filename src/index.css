@@ -71,6 +71,8 @@
 
     /* === Transições suaves padrão === */
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    /* Transição mais "bouncy" pra hovers e elevações de card */
+    --transition-spring: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
   }
 }
 
@@ -78,6 +80,13 @@
   /* Aplica borda padrão em todos os elementos */
   * {
     @apply border-border;
+  }
+
+  /* HTML: scroll suave nativo ao clicar em #âncoras */
+  html {
+    scroll-behavior: smooth;
+    /* Considera o header fixo (~64px) ao rolar até uma âncora */
+    scroll-padding-top: 80px;
   }
 
   /* Configurações do body: fundo, cor texto, fonte mono e seleção customizada */
@@ -89,6 +98,31 @@
       linear-gradient(hsl(280 95% 60% / 0.03) 1px, transparent 1px),
       linear-gradient(90deg, hsl(280 95% 60% / 0.03) 1px, transparent 1px);
     background-size: 40px 40px;
+    /* Anti-aliasing pra textos mais nítidos */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* === Scrollbar customizada (cyberpunk) === */
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-track { background: hsl(var(--background)); }
+  ::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, hsl(var(--primary)), hsl(var(--secondary)));
+    border-radius: 8px;
+    border: 2px solid hsl(var(--background));
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, hsl(var(--primary-glow)), hsl(var(--primary)));
+  }
+
+  /* === Acessibilidade: respeita preferência por menos movimento === */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
   }
 
   /* Títulos usam a fonte futurista Orbitron */
@@ -127,6 +161,25 @@
   /* Efeito glitch (tremida) ao passar o mouse */
   .glitch:hover {
     animation: glitch 0.3s ease-in-out;
+  }
+
+  /* Hover "lift" — eleva suavemente o elemento */
+  .hover-lift {
+    transition: var(--transition-spring);
+  }
+  .hover-lift:hover {
+    transform: translateY(-4px);
+  }
+
+  /* Estado inicial dos elementos com reveal (escondidos antes de animar) */
+  .reveal-hidden {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+
+  /* Transição "spring" reutilizável */
+  .transition-spring {
+    transition: var(--transition-spring);
   }
 }
 
