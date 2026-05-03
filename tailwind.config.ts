@@ -1,10 +1,14 @@
-/* ============================================================
-   ARQUIVO: tailwind.config.ts
-   Configuração do Tailwind CSS.
-   Aqui registramos as cores, fontes e animações que usamos
-   nas classes utilitárias (ex.: bg-primary, animate-float).
-   ============================================================ */
+/**
+ * Tailwind CSS — liga classes utilitárias (bg-primary, animate-float) ao projeto.
+ *
+ * · colors → na maior parte vêm de variáveis CSS em src/index.css (--primary, …).
+ * · fontFamily → Orbitron (títulos) e JetBrains Mono (corpo).
+ * · extend.keyframes / animation → nomes usados em className="animate-***".
+ *
+ * Se criar um arquivo novo em src/, o Tailwind já escaneia via `content` abaixo.
+ */
 import type { Config } from "tailwindcss";
+import tailwindcssAnimate from "tailwindcss-animate";
 
 export default {
   // Modo dark via classe (não usado, o site já é dark-only)
@@ -127,5 +131,5 @@ export default {
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [tailwindcssAnimate],
 } satisfies Config;

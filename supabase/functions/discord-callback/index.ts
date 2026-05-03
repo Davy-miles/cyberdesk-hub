@@ -31,7 +31,7 @@ Deno.serve(async (req) => {
   // O state guarda o path; para a origem, usamos o env CLIENT_ORIGIN ou referer.
   const siteOrigin = Deno.env.get("SITE_ORIGIN")
     ?? req.headers.get("referer")?.split("/").slice(0, 3).join("/")
-    ?? "https://id-preview--30ecd34f-8769-4737-9a72-0049c334e9ed.lovable.app";
+    ?? "http://localhost:8080";
 
   if (!code) {
     return redirect(siteOrigin, "/verify/error?reason=missing_code");

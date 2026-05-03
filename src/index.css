@@ -1,9 +1,20 @@
-/* ============================================================
-   ARQUIVO: index.css
-   Aqui ficam todas as variáveis de cor, fontes e estilos globais.
-   Usamos HSL (Hue, Saturation, Lightness) para todas as cores
-   porque assim fica fácil ajustar tonalidade sem trocar tudo.
-   ============================================================ */
+/*
+ * ============================================================================
+ * ESTILOS GLOBAIS (index.css)
+ * ============================================================================
+ * Em :root ficam as CORES do tema em formato HSL — ex: --primary, --accent.
+ * O Tailwind lê essas variáveis (veja tailwind.config.ts → colors).
+ *
+ * Para iniciantes:
+ *   · Mude --primary / --secondary / --accent para trocar a “marca” do site.
+ *   · body → grid de fundo e fonte mono padrão.
+ *   · @layer components → classes utilitárias (.text-gradient-cyber, .hover-lift).
+ *   · @keyframes no final → animações usadas pelo Tailwind (animate-float, etc.).
+ *
+ * Fontes vêm do Google (link abaixo). Para trocar fonte: altere o @import e
+ * tailwind.config.ts → fontFamily.
+ * ============================================================================
+ */
 
 /* Importa fontes do Google Fonts:
    - Orbitron: visual futurista (títulos/logo)
@@ -163,12 +174,13 @@
     animation: glitch 0.3s ease-in-out;
   }
 
-  /* Hover "lift" — eleva suavemente o elemento */
+  /* Hover "lift" — GPU-friendly para animação fluida */
   .hover-lift {
     transition: var(--transition-spring);
+    will-change: transform;
   }
   .hover-lift:hover {
-    transform: translateY(-4px);
+    transform: translate3d(0, -4px, 0);
   }
 
   /* Estado inicial dos elementos com reveal (escondidos antes de animar) */
@@ -180,6 +192,11 @@
   /* Transição "spring" reutilizável */
   .transition-spring {
     transition: var(--transition-spring);
+  }
+
+  /* Usado em botões/links — antes a classe não existia no CSS */
+  .transition-smooth {
+    transition: var(--transition-smooth);
   }
 }
 

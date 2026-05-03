@@ -1,16 +1,21 @@
-/* ============================================================
-   📚 AULA: Página de Erro (/verify/error)
-   ------------------------------------------------------------
-   Se algo der errado no callback do Discord, redirecionamos
-   para cá com ?reason=XXX explicando o que falhou.
-   ============================================================ */
-
+/**
+ * ============================================================================
+ * /verify/error — algo falhou no fluxo Discord (callback)
+ * ============================================================================
+ * A URL traz ?reason=codigo — ex: token_exchange, join_failed.
+ *
+ * O objeto REASONS abaixo traduz cada código para uma mensagem em português.
+ * Para adicionar um motivo novo: inclua a chave que o backend envia e o texto.
+ *
+ * ?status= pode trazer código HTTP (opcional) para debug.
+ * ============================================================================
+ */
 import { useSearchParams, Link } from "react-router-dom";
 import { AlertTriangle, RotateCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import MatrixRain from "@/components/MatrixRain";
 
-// Mapa de códigos de erro para mensagens amigáveis
+/** Mapa código (backend) → mensagem humana. Estenda se criar novos erros. */
 const REASONS: Record<string, string> = {
   missing_code: "Código de autorização não foi recebido do Discord.",
   token_exchange: "Falha ao trocar o código pelo token de acesso.",

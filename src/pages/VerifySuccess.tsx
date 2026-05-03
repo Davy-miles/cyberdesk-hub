@@ -1,17 +1,22 @@
-/* ============================================================
-   📚 AULA: Página de Sucesso (/verify/success)
-   ------------------------------------------------------------
-   O usuário cai aqui depois que o Discord autenticou e o bot
-   adicionou ele ao servidor. A URL traz ?u=NomeDoUsuario.
-   ============================================================ */
-
+/**
+ * ============================================================================
+ * /verify/success — usuário autenticou e entrou no servidor
+ * ============================================================================
+ * A URL pode trazer o nome do Discord, ex:
+ *   /verify/success?u=fulano
+ *
+ * useSearchParams() lê ?u=...  Se não tiver, usamos o texto padrão "hacker".
+ *
+ * Textos e botões: edite o JSX abaixo. Link "ABRIR DISCORD" usa o protocolo
+ * discord:// (abre o app se instalado).
+ * ============================================================================
+ */
 import { useSearchParams, Link } from "react-router-dom";
 import { CheckCircle2, MessageSquare, Home } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import MatrixRain from "@/components/MatrixRain";
 
 const VerifySuccess = () => {
-  // Hook do react-router para ler query params da URL
   const [params] = useSearchParams();
   const username = params.get("u") ?? "hacker";
 
@@ -21,7 +26,6 @@ const VerifySuccess = () => {
       <div className="absolute inset-0 bg-gradient-cyber opacity-10 blur-3xl pointer-events-none" />
 
       <div className="relative w-full max-w-lg p-6 sm:p-10 rounded-2xl border border-accent/40 bg-card/80 backdrop-blur-md shadow-neon text-center">
-        {/* Ícone de sucesso */}
         <div className="flex justify-center mb-6">
           <div className="w-20 h-20 rounded-full bg-accent/20 flex items-center justify-center animate-float">
             <CheckCircle2 className="w-12 h-12 text-accent" strokeWidth={2.5} />
@@ -40,12 +44,20 @@ const VerifySuccess = () => {
           Abra o Discord e diga oi pra galera. 👾
         </p>
 
-        {/* Bloquinho estilo terminal */}
         <div className="font-mono text-sm bg-background/80 border border-border rounded-lg p-4 mb-8 text-left">
-          <div><span className="text-muted-foreground">$</span> <span className="text-accent">whoami</span></div>
-          <div><span className="text-primary">{username}</span> <span className="text-muted-foreground">// verificado ✓</span></div>
-          <div><span className="text-muted-foreground">$</span> <span className="text-accent">status</span></div>
-          <div><span className="text-primary-glow">ONLINE • acesso total ao servidor</span></div>
+          <div>
+            <span className="text-muted-foreground">$</span> <span className="text-accent">whoami</span>
+          </div>
+          <div>
+            <span className="text-primary">{username}</span>{" "}
+            <span className="text-muted-foreground">// verificado ✓</span>
+          </div>
+          <div>
+            <span className="text-muted-foreground">$</span> <span className="text-accent">status</span>
+          </div>
+          <div>
+            <span className="text-primary-glow">ONLINE • acesso total ao servidor</span>
+          </div>
         </div>
 
         <div className="flex flex-col sm:flex-row gap-3 justify-center">

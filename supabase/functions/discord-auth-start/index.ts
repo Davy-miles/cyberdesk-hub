@@ -27,7 +27,7 @@ Deno.serve((req) => {
   }
 
   try {
-    // Lê secrets configurados em Lovable Cloud
+    // Secrets no dashboard Supabase (Edge Functions) ou CLI
     const clientId = Deno.env.get("DISCORD_CLIENT_ID");
     if (!clientId) throw new Error("DISCORD_CLIENT_ID não configurado");
 

@@ -1,69 +1,109 @@
-/* ============================================================
-   COMPONENTE: MatrixRain
-   Cria o efeito de "chuva de código" estilo Matrix no fundo.
-   Usa um <canvas> HTML5 desenhando caracteres aleatórios em roxo.
-   ============================================================ */
+/**
+ * ============================================================================
+ * MatrixRain — fundo animado (efeito “chuva de código”)
+ * ============================================================================
+ * É um <canvas> em tela cheia, atrás de tudo (z-index negativo).
+ *
+ * Onde aparece: Index, Verify, páginas de verificação (importado em cada uma).
+ *
+ * Performance (já otimizado aqui):
+ *   · requestAnimationFrame em vez de setInterval fixo
+ *   · pausa quando a aba está em segundo plano
+ *   · limite de colunas no canvas
+ *
+ * Se quiser DESLIGAR o efeito numa página: remova <MatrixRain /> do JSX
+ * daquela página. Para mudar cores: altere os hsl(...) dentro de draw().
+ * ============================================================================
+ */
 import { useEffect, useRef } from "react";
 
+const CHARS =
+  "アァカサタナハマヤラワ0123456789ABCDEF<>{}[]/\\";
+const BASE_FONT = 14;
+const MIN_INTERVAL_MS = 45;
+const MAX_COLUMNS = 96;
+
 const MatrixRain = () => {
-  // useRef = referência direta ao elemento canvas no DOM
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const rafRef = useRef(0);
+  const lastDrawRef = useRef(0);
+  const dropsRef = useRef<number[]>([]);
+  const hiddenRef = useRef(false);
 
   useEffect(() => {
     const canvas = canvasRef.current;
-    if (!canvas) return; // se ainda não montou, sai
-    const ctx = canvas.getContext("2d");
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d", { alpha: true });
     if (!ctx) return;
 
-    // Ajusta o tamanho do canvas para preencher a janela inteira
     const resize = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+      canvas.width = Math.floor(w * dpr);
+      canvas.height = Math.floor(h * dpr);
+      canvas.style.width = `${w}px`;
+      canvas.style.height = `${h}px`;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+      const columns = Math.min(
+        Math.floor(w / BASE_FONT),
+        MAX_COLUMNS
+      );
+      const prev = dropsRef.current;
+      dropsRef.current = Array.from({ length: columns }, (_, i) =>
+        i < prev.length ? prev[i]! : 1
+      );
     };
+
+    const onVisibility = () => {
+      hiddenRef.current = document.visibilityState === "hidden";
+    };
+
     resize();
     window.addEventListener("resize", resize);
+    document.addEventListener("visibilitychange", onVisibility);
 
-    // Caracteres que vão "cair" (mistura katakana + números + símbolos)
-    const chars = "アァカサタナハマヤラワ0123456789ABCDEF<>{}[]/\\";
-    const fontSize = 14;
-    // Cada coluna terá uma "gota" caindo
-    const columns = Math.floor(canvas.width / fontSize);
-    const drops: number[] = Array(columns).fill(1);
+    const draw = (time: number) => {
+      rafRef.current = requestAnimationFrame(draw);
 
-    // Função que desenha um frame da animação
-    const draw = () => {
-      // Camada semi-transparente preta para criar o efeito de rastro
-      ctx.fillStyle = "hsla(270, 30%, 4%, 0.08)";
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      if (hiddenRef.current) return;
+      if (time - lastDrawRef.current < MIN_INTERVAL_MS) return;
+      lastDrawRef.current = time;
 
-      // Cor roxa neon nos caracteres
+      const drops = dropsRef.current;
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+
+      ctx.fillStyle = "hsla(270, 30%, 4%, 0.09)";
+      ctx.fillRect(0, 0, w, h);
+
       ctx.fillStyle = "hsl(280, 95%, 60%)";
-      ctx.font = `${fontSize}px JetBrains Mono`;
+      ctx.font = `${BASE_FONT}px JetBrains Mono, monospace`;
 
-      // Desenha um caractere em cada coluna
       for (let i = 0; i < drops.length; i++) {
-        const text = chars[Math.floor(Math.random() * chars.length)];
-        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+        const text = CHARS[Math.floor(Math.random() * CHARS.length)];
+        ctx.fillText(text, i * BASE_FONT, drops[i] * BASE_FONT);
 
-        // Quando passa do final da tela, reseta (com chance aleatória)
-        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+        if (
+          drops[i] * BASE_FONT > h &&
+          Math.random() > 0.975
+        ) {
           drops[i] = 0;
         }
         drops[i]++;
       }
     };
 
-    // Roda a animação a cada 50ms
-    const interval = setInterval(draw, 50);
+    rafRef.current = requestAnimationFrame(draw);
 
-    // Limpeza quando o componente é desmontado
     return () => {
-      clearInterval(interval);
+      cancelAnimationFrame(rafRef.current);
       window.removeEventListener("resize", resize);
+      document.removeEventListener("visibilitychange", onVisibility);
     };
   }, []);
 
-  // pointer-events-none = não bloqueia cliques no que está em cima
   return (
     <canvas
       ref={canvasRef}
