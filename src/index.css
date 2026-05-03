@@ -30,55 +30,55 @@
   /* :root = tema padrão. Como o site é dark-only, deixamos tudo escuro aqui mesmo. */
   :root {
     /* === Cores base do fundo e texto === */
-    --background: 270 30% 4%;          /* Quase preto com leve toque roxo */
-    --foreground: 280 20% 92%;         /* Texto claro levemente lilás */
+    --background: 232 40% 6%;          /* Azul quase preto */
+    --foreground: 230 35% 93%;         /* Texto claro frio */
 
     /* === Cards (caixinhas de conteúdo) === */
-    --card: 270 25% 7%;                /* Roxo bem escuro */
-    --card-foreground: 280 20% 92%;
+    --card: 236 34% 9%;                /* Azul-violeta escuro */
+    --card-foreground: 230 35% 93%;
 
     /* === Popovers (menus flutuantes) === */
-    --popover: 270 25% 7%;
-    --popover-foreground: 280 20% 92%;
+    --popover: 236 34% 9%;
+    --popover-foreground: 230 35% 93%;
 
     /* === Cor PRIMÁRIA = roxo neon (a cor da marca) === */
-    --primary: 280 95% 60%;            /* Roxo vibrante */
-    --primary-foreground: 270 30% 4%;  /* Texto escuro em cima do roxo */
-    --primary-glow: 285 100% 70%;      /* Variação para brilhos/gradientes */
+    --primary: 268 95% 64%;            /* Roxo vibrante moderno */
+    --primary-foreground: 235 45% 8%;
+    --primary-glow: 224 98% 70%;       /* Glow azulado */
 
     /* === Cor SECUNDÁRIA = ciano/magenta cyberpunk === */
-    --secondary: 320 90% 55%;          /* Magenta neon */
-    --secondary-foreground: 270 30% 4%;
+    --secondary: 218 96% 62%;          /* Azul elétrico */
+    --secondary-foreground: 235 45% 8%;
 
     /* === Cores "muted" = elementos discretos === */
-    --muted: 270 20% 12%;
-    --muted-foreground: 280 15% 65%;
+    --muted: 232 24% 14%;
+    --muted-foreground: 230 15% 66%;
 
     /* === Accent = destaque alternativo (ciano hacker) === */
-    --accent: 180 100% 50%;            /* Ciano elétrico */
-    --accent-foreground: 270 30% 4%;
+    --accent: 194 95% 56%;             /* Ciano/azul neon */
+    --accent-foreground: 235 45% 8%;
 
     /* === Destrutivo (erros, deletar) === */
     --destructive: 0 90% 55%;
     --destructive-foreground: 280 20% 92%;
 
     /* === Bordas e inputs === */
-    --border: 280 50% 20%;             /* Borda roxa sutil */
-    --input: 270 25% 12%;
-    --ring: 280 95% 60%;               /* Anel de foco roxo neon */
+    --border: 235 44% 22%;
+    --input: 232 26% 14%;
+    --ring: 268 95% 64%;
 
     /* Raio de borda padrão */
     --radius: 0.5rem;
 
     /* === GRADIENTES customizados (usados em botões, hero, etc.) === */
-    --gradient-primary: linear-gradient(135deg, hsl(280 95% 60%), hsl(320 90% 55%));
-    --gradient-cyber: linear-gradient(135deg, hsl(280 95% 60%) 0%, hsl(260 90% 50%) 50%, hsl(320 90% 55%) 100%);
-    --gradient-dark: linear-gradient(180deg, hsl(270 30% 4%) 0%, hsl(270 40% 8%) 100%);
+    --gradient-primary: linear-gradient(135deg, hsl(268 95% 64%), hsl(218 96% 62%));
+    --gradient-cyber: linear-gradient(135deg, hsl(268 95% 64%) 0%, hsl(230 91% 58%) 45%, hsl(194 95% 56%) 100%);
+    --gradient-dark: linear-gradient(180deg, hsl(232 40% 6%) 0%, hsl(236 48% 9%) 100%);
 
     /* === SOMBRAS NEON (efeito glow) === */
-    --shadow-neon: 0 0 20px hsl(280 95% 60% / 0.5), 0 0 40px hsl(280 95% 60% / 0.3);
-    --shadow-neon-strong: 0 0 30px hsl(280 95% 60% / 0.8), 0 0 60px hsl(285 100% 70% / 0.5);
-    --shadow-cyber: 0 10px 40px -10px hsl(280 95% 60% / 0.6);
+    --shadow-neon: 0 0 20px hsl(268 95% 64% / 0.45), 0 0 40px hsl(218 96% 62% / 0.25);
+    --shadow-neon-strong: 0 0 32px hsl(268 95% 64% / 0.8), 0 0 64px hsl(194 95% 56% / 0.45);
+    --shadow-cyber: 0 10px 40px -10px hsl(230 91% 58% / 0.6);
 
     /* === Transições suaves padrão === */
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -235,4 +235,24 @@
 @keyframes scanline {
   0%   { transform: translateY(-100%); }
   100% { transform: translateY(100vh); }
+}
+
+/* Barra de progresso da tela de boot */
+@keyframes loader-bar {
+  0% {
+    transform: scaleX(0);
+    opacity: 0.65;
+  }
+  50% {
+    transform: scaleX(0.72);
+    opacity: 0.95;
+  }
+  100% {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+}
+
+.animate-loader-bar {
+  animation: loader-bar 1.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }

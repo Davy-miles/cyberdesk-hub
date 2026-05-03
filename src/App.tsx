@@ -18,12 +18,13 @@
  * Toaster / Sonner = notificações “toast” (mensagens no canto da tela).
  * ============================================================================
  */
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import BootLoader from "@/components/BootLoader";
 
 const Index = lazy(() => import("./pages/Index.tsx"));
 const Verify = lazy(() => import("./pages/Verify.tsx"));
@@ -56,24 +57,34 @@ function RouteFallback() {
   );
 }
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider delayDuration={200}>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter basename="/cyberdesk-hub">
-        <Suspense fallback={<RouteFallback />}>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/verify" element={<Verify />} />
-            <Route path="/verify/success" element={<VerifySuccess />} />
-            <Route path="/verify/error" element={<VerifyError />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </Suspense>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
+const App = () => {
+  const [booting, setBooting] = useState(true);
+
+  useEffect(() => {
+    const id = window.setTimeout(() => setBooting(false), 1800);
+    return () => window.clearTimeout(id);
+  }, []);
+
+  return (
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider delayDuration={200}>
+        <Toaster />
+        <Sonner />
+        {booting && <BootLoader />}
+        <BrowserRouter basename="/cyberdesk-hub">
+          <Suspense fallback={<RouteFallback />}>
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/verify" element={<Verify />} />
+              <Route path="/verify/success" element={<VerifySuccess />} />
+              <Route path="/verify/error" element={<VerifyError />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </Suspense>
+        </BrowserRouter>
+      </TooltipProvider>
+    </QueryClientProvider>
+  );
+};
 
 export default App;
