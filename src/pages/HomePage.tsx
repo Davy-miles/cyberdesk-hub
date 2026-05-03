@@ -53,12 +53,19 @@ import {
   CheckCircle2,
   Hash,
   Radio,
+  Menu,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import MatrixRain from "@/components/MatrixRainBackground";
 import FeatureCard from "@/components/FeatureCard";
 import TerminalWindow from "@/components/TerminalPreview";
 import BackgroundAudio from "@/components/BackgroundAudio";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+} from "@/components/ui/dropdown-menu";
 import { useReveal } from "@/hooks/useReveal";
 import { useDiscordStats } from "@/hooks/useDiscordStats";
 import heroBg from "@/assets/hero-cyberpunk.jpg";
@@ -169,6 +176,28 @@ const HomePage = () => {
               ./verify
             </Link>
           </div>
+
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <button
+                aria-label="Abrir menu"
+                className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border/70 bg-background/90 text-foreground shadow-sm transition hover:border-primary/80 hover:text-primary focus:outline-none focus:ring-2 focus:ring-primary/50 md:mr-2"
+              >
+                <Menu className="h-5 w-5" />
+              </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" sideOffset={6} className="mt-2">
+              <DropdownMenuItem asChild>
+                <Link to="/">Home</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link to="/verify">Verificar</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <a href={inviteUrl} target="_blank" rel="noreferrer">Discord</a>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
 
           <Button
             asChild
