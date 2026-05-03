@@ -75,10 +75,10 @@ const MatrixRain = () => {
       const w = window.innerWidth;
       const h = window.innerHeight;
 
-      ctx.fillStyle = "hsla(232, 40%, 6%, 0.1)";
+      ctx.fillStyle = "hsla(270, 30%, 4%, 0.09)";
       ctx.fillRect(0, 0, w, h);
 
-      ctx.fillStyle = "hsl(224, 98%, 70%)";
+      ctx.fillStyle = "hsl(280, 95%, 60%)";
       ctx.font = `${BASE_FONT}px JetBrains Mono, monospace`;
 
       for (let i = 0; i < drops.length; i++) {

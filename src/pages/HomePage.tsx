@@ -1,6 +1,6 @@
 /**
  * ============================================================================
- * PÁGINA INICIAL (home) — src/pages/HomePage.tsx
+ * PÁGINA INICIAL (home) — src/pages/Index.tsx
  * ============================================================================
  * É a landing: menu fixo, hero, números, cards de features, CTA, rodapé.
  *
@@ -36,8 +36,6 @@
 
 import { Button } from "@/components/ui/button";
 import {
-  Activity,
-  Bot,
   Code2,
   Shield,
   Terminal,
@@ -51,23 +49,12 @@ import {
   ArrowRight,
   Lock,
   CheckCircle2,
-  Hash,
-  Radio,
-  Menu,
 } from "lucide-react";
 import { Link } from "react-router-dom";
-import MatrixRain from "@/components/MatrixRainBackground";
+import MatrixRain from "@/components/MatrixRain";
 import FeatureCard from "@/components/FeatureCard";
-import TerminalWindow from "@/components/TerminalPreview";
-import BackgroundAudio from "@/components/BackgroundAudio";
-import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuItem,
-} from "@/components/ui/dropdown-menu";
+import TerminalWindow from "@/components/TerminalWindow";
 import { useReveal } from "@/hooks/useReveal";
-import { useDiscordStats } from "@/hooks/useDiscordStats";
 import heroBg from "@/assets/hero-cyberpunk.jpg";
 
 // ─── Configuração rápida (edite aqui) ───────────────────────────────────────
@@ -78,9 +65,11 @@ const SERVER_NAME = "CYBER WORLD";
 /**
  * Arquivo na pasta public/ — ícone do menu, rodapé e favicon (via index.html).
  * Exemplos: "/logo.svg"  |  "/logo.png"  |  "/minha-marca.webp"
- * Para usar a logo do servidor (Cyber world.jpeg), use: "/server-logo.jpg"
  */
-const LOGO_SRC = "/server-logo.jpg";
+const LOGO_SRC = "/logo.svg";
+
+/** Link permanente de convite do Discord (troque pelo seu). */
+const DISCORD_INVITE = "https://discord.gg/cyberworld";
 
 /**
  * Cards da seção “features”.
@@ -98,54 +87,24 @@ const features = [
   { icon: MessageSquare, title: "Eventos & Lives", description: "Workshops, hackathons, code battles e palestras com profissionais." },
 ];
 
-const HomePage = () => {
+/** Números da faixa “stats” (impacto visual — pode ser estimativa). */
+const stats = [
+  { value: "5K+", label: "Membros Ativos" },
+  { value: "40+", label: "Canais Temáticos" },
+  { value: "24/7", label: "Comunidade Online" },
+  { value: "100%", label: "Gratuito" },
+];
+
+const Index = () => {
   // Animações ao rolar a página — cada bloco tem seu próprio “sensor” de visibilidade
   const heroReveal = useReveal<HTMLDivElement>();
   const statsReveal = useReveal<HTMLDivElement>();
   const featuresHeader = useReveal<HTMLDivElement>();
   const ctaReveal = useReveal<HTMLDivElement>();
-  const {
-    loading: loadingDiscordStats,
-    error: discordStatsError,
-    memberCount,
-    onlineCount,
-    channelCount,
-    guildName,
-    guildIconUrl,
-    inviteUrl,
-  } = useDiscordStats();
-
-  const stats = [
-    {
-      value: loadingDiscordStats ? "..." : memberCount?.toLocaleString("pt-BR") ?? "N/A",
-      label: "Membros Reais",
-      icon: Users,
-    },
-    {
-      value: loadingDiscordStats ? "..." : onlineCount?.toLocaleString("pt-BR") ?? "N/A",
-      label: "Online Agora",
-      icon: Activity,
-    },
-    {
-      value: loadingDiscordStats ? "..." : channelCount?.toLocaleString("pt-BR") ?? "N/A",
-      label: "Canais Ativos",
-      icon: Hash,
-    },
-    {
-      value: loadingDiscordStats ? "..." : "Live",
-      label: "Auto Update 60s",
-      icon: Radio,
-    },
-  ];
 
   return (
     <div className="relative min-h-screen overflow-x-hidden">
       <MatrixRain />
-      <BackgroundAudio 
-        src="/audio/cyberpunk-bg.mp3" 
-        volume={0.15} 
-        autoPlay={true}
-      />
 
       {/* Barra superior fixa: logo + links âncora + botão */}
       <header className="fixed top-0 left-0 right-0 z-50 backdrop-blur-md bg-background/70 border-b border-border">
@@ -176,28 +135,6 @@ const HomePage = () => {
               ./verify
             </Link>
           </div>
-
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <button
-                aria-label="Abrir menu"
-                className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border/70 bg-background/90 text-foreground shadow-sm transition hover:border-primary/80 hover:text-primary focus:outline-none focus:ring-2 focus:ring-primary/50 md:mr-2"
-              >
-                <Menu className="h-5 w-5" />
-              </button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" sideOffset={6} className="mt-2">
-              <DropdownMenuItem asChild>
-                <Link to="/">Home</Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Link to="/verify">Verificar</Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <a href={inviteUrl} target="_blank" rel="noreferrer">Discord</a>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
 
           <Button
             asChild
@@ -234,9 +171,9 @@ const HomePage = () => {
             ref={heroReveal.ref}
             className={`space-y-6 sm:space-y-8 text-center lg:text-left ${heroReveal.visible ? "animate-fade-in-up" : "reveal-hidden"}`}
           >
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-primary/40 bg-primary/10 text-xs font-mono text-primary">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-primary/40 bg-primary/5 text-xs font-mono text-primary">
               <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-              VISUAL REFORMULADO • DADOS REAIS DO DISCORD
+              SISTEMA ONLINE • COMUNIDADE ATIVA
             </div>
 
             <h1 className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black leading-[1.05]">
@@ -245,11 +182,11 @@ const HomePage = () => {
             </h1>
 
             <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-xl mx-auto lg:mx-0 leading-relaxed">
-              Um hub dark moderno para{" "}
+              O servidor Discord definitivo para{" "}
               <span className="text-primary font-semibold">desenvolvedores</span>,{" "}
               <span className="text-secondary font-semibold">hackers éticos</span> e{" "}
-              <span className="text-accent font-semibold">profissionais de cybersec</span>, com
-              métricas da comunidade em tempo real.
+              <span className="text-accent font-semibold">profissionais de cybersec</span>.
+              Compile conhecimento. Debugue carreiras. Execute conexões.
             </p>
 
             <div className="flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4 justify-center lg:justify-start">
@@ -270,16 +207,16 @@ const HomePage = () => {
                 variant="outline"
                 className="border-primary/50 text-primary hover:bg-primary/10 hover:border-primary transition-smooth font-mono text-base"
               >
-                <a href="#stats">
-                  <Activity className="mr-2 w-5 h-5" />
-                  VER STATUS LIVE
+                <a href="#features">
+                  <Code2 className="mr-2 w-5 h-5" />
+                  VER FEATURES
                 </a>
               </Button>
             </div>
           </div>
 
           <div className="relative">
-            <div className="absolute -inset-4 bg-gradient-cyber opacity-30 blur-3xl -z-10 animate-pulse" />
+            <div className="absolute -inset-4 bg-gradient-cyber opacity-20 blur-3xl -z-10" />
             <TerminalWindow />
           </div>
         </div>
@@ -296,9 +233,6 @@ const HomePage = () => {
               style={{ animationDelay: statsReveal.visible ? `${i * 100}ms` : undefined }}
               className={`text-center group hover-lift ${statsReveal.visible ? "animate-scale-in" : "reveal-hidden"}`}
             >
-              <div className="mx-auto mb-2 flex h-10 w-10 items-center justify-center rounded-lg border border-primary/30 bg-card/70">
-                <stat.icon className="h-5 w-5 text-primary" />
-              </div>
               <div className="font-display text-3xl sm:text-4xl md:text-5xl font-black text-gradient-cyber group-hover:text-glow transition-spring">
                 {stat.value}
               </div>
@@ -307,40 +241,6 @@ const HomePage = () => {
               </div>
             </div>
           ))}
-        </div>
-        {discordStatsError && (
-          <p className="container mx-auto mt-6 px-4 text-center text-xs font-mono text-muted-foreground">
-            Nao foi possivel atualizar tudo em tempo real. Ative o widget do Discord para liberar total de canais.
-          </p>
-        )}
-      </section>
-
-      <section className="py-10 sm:py-12">
-        <div className="container mx-auto px-4">
-          <div className="mx-auto max-w-3xl rounded-2xl border border-primary/30 bg-card/60 p-5 shadow-neon backdrop-blur-xl sm:p-7">
-            <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
-              <div className="flex items-center gap-4">
-                <img
-                  src={guildIconUrl || LOGO_SRC}
-                  alt={`${guildName} icon`}
-                  className="h-16 w-16 rounded-2xl border border-primary/30 object-cover shadow-neon"
-                  loading="lazy"
-                  decoding="async"
-                />
-                <div>
-                  <p className="text-xs font-mono uppercase tracking-[0.2em] text-accent">Discord Bot Feed</p>
-                  <h3 className="font-display text-2xl font-black text-gradient-cyber">{guildName}</h3>
-                  <p className="text-sm text-muted-foreground">Avatar e dados sincronizados automaticamente</p>
-                </div>
-              </div>
-              <Button asChild className="bg-gradient-cyber hover:shadow-neon-strong transition-smooth font-mono">
-                <a href={inviteUrl} target="_blank" rel="noopener noreferrer">
-                  <Bot className="mr-2 h-4 w-4" />
-                  ENTRAR NO DISCORD
-                </a>
-              </Button>
-            </div>
-          </div>
         </div>
       </section>
 
@@ -406,7 +306,7 @@ const HomePage = () => {
             <div className="font-mono text-xs sm:text-sm bg-background/80 border border-border rounded-lg p-3 sm:p-4 mb-6 sm:mb-8 text-left overflow-x-auto">
               <span className="text-muted-foreground">$ </span>
               <span className="text-accent">curl -X JOIN </span>
-              <span className="text-primary">{guildName.toLowerCase().replace(/\s+/g, "")}.gg</span>
+              <span className="text-primary">cyberworld.gg</span>
               <span className="animate-blink text-primary">_</span>
             </div>
 
@@ -443,7 +343,7 @@ const HomePage = () => {
           </div>
           <div className="flex items-center gap-4">
             <a
-              href={inviteUrl}
+              href={DISCORD_INVITE}
               target="_blank"
               rel="noopener noreferrer"
               className="hover:text-primary transition-smooth flex items-center gap-1"
@@ -465,4 +365,4 @@ const HomePage = () => {
   );
 };
 
-export default HomePage;
+export default Index;

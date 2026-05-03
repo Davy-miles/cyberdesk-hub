@@ -5,11 +5,11 @@
  * Aqui a gente declara as URLs (rotas) e o que cada uma mostra.
  *
  * Mapa mental:
- *   /                 → HomePage (landing)      — arquivo: pages/HomePage.tsx
- *   /verify           → tela do botão Discord  — pages/VerifyPage.tsx
- *   /verify/success   → depois do login OK     — pages/VerifySuccessPage.tsx
- *   /verify/error     → se o Discord falhar     — pages/VerifyErrorPage.tsx
- *   qualquer outra    → 404                      — pages/NotFoundPage.tsx
+ *   /                 → Index (landing)        — arquivo: pages/Index.tsx
+ *   /verify           → tela do botão Discord  — pages/Verify.tsx
+ *   /verify/success   → depois do login OK     — pages/VerifySuccess.tsx
+ *   /verify/error     → se o Discord falhar     — pages/VerifyError.tsx
+ *   qualquer outra    → 404                      — pages/NotFound.tsx
  *
  * lazy(() => import(...)) = a página só é baixada quando o usuário acessa
  * (deixa o primeiro carregamento da home mais leve).
@@ -18,19 +18,18 @@
  * Toaster / Sonner = notificações “toast” (mensagens no canto da tela).
  * ============================================================================
  */
-import { lazy, Suspense, useEffect, useState } from "react";
+import { lazy, Suspense } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import BootLoader from "@/components/BootLoaderScreen";
 
-const HomePage = lazy(() => import("./pages/HomePage.tsx"));
-const VerifyPage = lazy(() => import("./pages/VerifyPage.tsx"));
-const VerifySuccessPage = lazy(() => import("./pages/VerifySuccessPage.tsx"));
-const VerifyErrorPage = lazy(() => import("./pages/VerifyErrorPage.tsx"));
-const NotFoundPage = lazy(() => import("./pages/NotFoundPage.tsx"));
+const Index = lazy(() => import("./pages/Index.tsx"));
+const Verify = lazy(() => import("./pages/Verify.tsx"));
+const VerifySuccess = lazy(() => import("./pages/VerifySuccess.tsx"));
+const VerifyError = lazy(() => import("./pages/VerifyError.tsx"));
+const NotFound = lazy(() => import("./pages/NotFound.tsx"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -57,34 +56,24 @@ function RouteFallback() {
   );
 }
 
-const App = () => {
-  const [booting, setBooting] = useState(true);
-
-  useEffect(() => {
-    const id = window.setTimeout(() => setBooting(false), 1800);
-    return () => window.clearTimeout(id);
-  }, []);
-
-  return (
-    <QueryClientProvider client={queryClient}>
-      <TooltipProvider delayDuration={200}>
-        <Toaster />
-        <Sonner />
-        {booting && <BootLoader />}
-        <BrowserRouter basename="/cyberdesk-hub">
-          <Suspense fallback={<RouteFallback />}>
-            <Routes>
-              <Route path="/" element={<HomePage />} />
-              <Route path="/verify" element={<VerifyPage />} />
-              <Route path="/verify/success" element={<VerifySuccessPage />} />
-              <Route path="/verify/error" element={<VerifyErrorPage />} />
-              <Route path="*" element={<NotFoundPage />} />
-            </Routes>
-          </Suspense>
-        </BrowserRouter>
-      </TooltipProvider>
-    </QueryClientProvider>
-  );
-};
+const App = () => (
+  <QueryClientProvider client={queryClient}>
+    <TooltipProvider delayDuration={200}>
+      <Toaster />
+      <Sonner />
+      <BrowserRouter basename="/cyberdesk-hub">
+        <Suspense fallback={<RouteFallback />}>
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/verify" element={<Verify />} />
+            <Route path="/verify/success" element={<VerifySuccess />} />
+            <Route path="/verify/error" element={<VerifyError />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </Suspense>
+      </BrowserRouter>
+    </TooltipProvider>
+  </QueryClientProvider>
+);
 
 export default App;
