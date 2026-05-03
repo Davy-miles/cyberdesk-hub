@@ -59,6 +59,12 @@ const stats = [
 ];
 
 const Index = () => {
+  // 📚 Hooks de "reveal on scroll" — animam quando entram na tela
+  const heroReveal = useReveal<HTMLDivElement>();
+  const statsReveal = useReveal<HTMLDivElement>();
+  const featuresHeader = useReveal<HTMLDivElement>();
+  const ctaReveal = useReveal<HTMLDivElement>();
+
   return (
     /* relative + overflow-x-hidden = base segura para elementos absolutos */
     <div className="relative min-h-screen overflow-x-hidden">
