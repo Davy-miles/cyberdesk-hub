@@ -244,7 +244,10 @@ const Index = () => {
         <div className="absolute inset-0 bg-gradient-cyber opacity-10 blur-3xl" />
 
         <div className="container mx-auto px-4 relative">
-          <div className="max-w-3xl mx-auto text-center p-6 sm:p-10 md:p-14 rounded-2xl border border-primary/40 bg-card/50 backdrop-blur-md shadow-neon">
+          <div
+            ref={ctaReveal.ref}
+            className={`max-w-3xl mx-auto text-center p-6 sm:p-10 md:p-14 rounded-2xl border border-primary/40 bg-card/50 backdrop-blur-md shadow-neon ${ctaReveal.visible ? "animate-scale-in" : "reveal-hidden"}`}
+          >
             <div className="inline-flex w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-gradient-cyber items-center justify-center mb-6 shadow-neon-strong animate-float">
               <Lock className="w-7 h-7 sm:w-8 sm:h-8 text-primary-foreground" />
             </div>
