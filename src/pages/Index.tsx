@@ -29,6 +29,7 @@ import { Link } from "react-router-dom";
 import MatrixRain from "@/components/MatrixRain";
 import FeatureCard from "@/components/FeatureCard";
 import TerminalWindow from "@/components/TerminalWindow";
+import { useReveal } from "@/hooks/useReveal";
 import heroBg from "@/assets/hero-cyberpunk.jpg";
 
 // ============= CONFIGURAÇÕES (edite aqui) =============
@@ -58,6 +59,12 @@ const stats = [
 ];
 
 const Index = () => {
+  // 📚 Hooks de "reveal on scroll" — animam quando entram na tela
+  const heroReveal = useReveal<HTMLDivElement>();
+  const statsReveal = useReveal<HTMLDivElement>();
+  const featuresHeader = useReveal<HTMLDivElement>();
+  const ctaReveal = useReveal<HTMLDivElement>();
+
   return (
     /* relative + overflow-x-hidden = base segura para elementos absolutos */
     <div className="relative min-h-screen overflow-x-hidden">
@@ -119,7 +126,10 @@ const Index = () => {
 
         <div className="container mx-auto px-4 grid lg:grid-cols-2 gap-10 lg:gap-12 items-center">
           {/* === Coluna esquerda: textos + CTA === */}
-          <div className="space-y-6 sm:space-y-8 text-center lg:text-left">
+          <div
+            ref={heroReveal.ref}
+            className={`space-y-6 sm:space-y-8 text-center lg:text-left ${heroReveal.visible ? "animate-fade-in-up" : "reveal-hidden"}`}
+          >
             {/* Tag pequena estilo terminal */}
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-primary/40 bg-primary/5 text-xs font-mono text-primary">
               <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
@@ -170,10 +180,17 @@ const Index = () => {
           3) STATS — números de impacto
           ========================================================== */}
       <section id="stats" className="py-12 sm:py-16 border-y border-border bg-card/30 backdrop-blur-sm">
-        <div className="container mx-auto px-4 grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8">
-          {stats.map((stat) => (
-            <div key={stat.label} className="text-center group">
-              <div className="font-display text-3xl sm:text-4xl md:text-5xl font-black text-gradient-cyber group-hover:text-glow transition-smooth">
+        <div
+          ref={statsReveal.ref}
+          className="container mx-auto px-4 grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8"
+        >
+          {stats.map((stat, i) => (
+            <div
+              key={stat.label}
+              style={{ animationDelay: statsReveal.visible ? `${i * 100}ms` : undefined }}
+              className={`text-center group hover-lift ${statsReveal.visible ? "animate-scale-in" : "reveal-hidden"}`}
+            >
+              <div className="font-display text-3xl sm:text-4xl md:text-5xl font-black text-gradient-cyber group-hover:text-glow transition-spring">
                 {stat.value}
               </div>
               <div className="mt-2 text-xs sm:text-sm font-mono text-muted-foreground uppercase tracking-wider">
@@ -189,7 +206,10 @@ const Index = () => {
           ========================================================== */}
       <section id="features" className="py-16 sm:py-24">
         <div className="container mx-auto px-4">
-          <div className="text-center max-w-2xl mx-auto mb-12 sm:mb-16">
+          <div
+            ref={featuresHeader.ref}
+            className={`text-center max-w-2xl mx-auto mb-12 sm:mb-16 ${featuresHeader.visible ? "animate-fade-in-up" : "reveal-hidden"}`}
+          >
             <div className="inline-block px-3 py-1 rounded-full border border-accent/40 bg-accent/5 text-xs font-mono text-accent mb-4">
               {"// FEATURES"}
             </div>
@@ -204,8 +224,14 @@ const Index = () => {
 
           {/* 1 coluna no mobile → 2 no sm → 3 no md → 4 no lg */}
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
-            {features.map((f) => (
-              <FeatureCard key={f.title} icon={f.icon} title={f.title} description={f.description} />
+            {features.map((f, i) => (
+              <FeatureCard
+                key={f.title}
+                icon={f.icon}
+                title={f.title}
+                description={f.description}
+                delay={i * 80}
+              />
             ))}
           </div>
         </div>
@@ -218,7 +244,10 @@ const Index = () => {
         <div className="absolute inset-0 bg-gradient-cyber opacity-10 blur-3xl" />
 
         <div className="container mx-auto px-4 relative">
-          <div className="max-w-3xl mx-auto text-center p-6 sm:p-10 md:p-14 rounded-2xl border border-primary/40 bg-card/50 backdrop-blur-md shadow-neon">
+          <div
+            ref={ctaReveal.ref}
+            className={`max-w-3xl mx-auto text-center p-6 sm:p-10 md:p-14 rounded-2xl border border-primary/40 bg-card/50 backdrop-blur-md shadow-neon ${ctaReveal.visible ? "animate-scale-in" : "reveal-hidden"}`}
+          >
             <div className="inline-flex w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-gradient-cyber items-center justify-center mb-6 shadow-neon-strong animate-float">
               <Lock className="w-7 h-7 sm:w-8 sm:h-8 text-primary-foreground" />
             </div>

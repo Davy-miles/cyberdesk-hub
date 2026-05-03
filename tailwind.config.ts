@@ -94,6 +94,24 @@ export default {
           "0%, 50%":   { opacity: "1" },
           "51%, 100%": { opacity: "0" },
         },
+        // Animações de entrada (reveal on scroll)
+        "fade-in-up": {
+          "0%":   { opacity: "0", transform: "translateY(24px)" },
+          "100%": { opacity: "1", transform: "translateY(0)" },
+        },
+        "fade-in": {
+          "0%":   { opacity: "0" },
+          "100%": { opacity: "1" },
+        },
+        "scale-in": {
+          "0%":   { opacity: "0", transform: "scale(0.95)" },
+          "100%": { opacity: "1", transform: "scale(1)" },
+        },
+        // Gradiente animado (move o background lentamente)
+        "gradient-shift": {
+          "0%, 100%": { backgroundPosition: "0% 50%" },
+          "50%":      { backgroundPosition: "100% 50%" },
+        },
       },
       // === ANIMAÇÕES (atalhos das keyframes acima) ===
       animation: {
@@ -102,6 +120,10 @@ export default {
         "pulse-glow":     "pulse-glow 2s ease-in-out infinite",
         "float":          "float 3s ease-in-out infinite",
         "blink":          "blink 1s step-end infinite",
+        "fade-in-up":     "fade-in-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both",
+        "fade-in":        "fade-in 0.6s ease-out both",
+        "scale-in":       "scale-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) both",
+        "gradient-shift": "gradient-shift 8s ease infinite",
       },
     },
   },
